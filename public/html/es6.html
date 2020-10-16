@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <ul>
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+        <li>5</li>
+    </ul>
+
+<script>
+    var a = 10;
+    //window.a = 10;
+    //this.a = 10;
+    
+    //console.log(this); //html에서 최상위 객체는 window  
+    console.log(a);  
+    
+
+    function test(){
+        console.log(this);
+    }
+    test();
+  
+    /* 리터럴 객체: 변수와 함수를 저장 */
+    var obj = {
+        a: 10,
+        test: function(){
+            console.log(this);
+        }
+    }
+    obj.test();
+
+
+    //함수 표현식 : 변수에 저장을 하기 때문에 위에 선언하게 되면 에러 발생
+    var Test = function(){
+        console.log("Test");
+    }
+    Test();
+
+    //함수 선언문 : 최초의 자바스크립트가 선언이 될 때 함수문을 가장 위에 올려둠 위치가 상관 없음
+    function Test2(){
+        console.log("Test2");
+    }
+    Test2();
+
+    /* 생성자 객체  : 붕어빵 기계*/
+    function Test3(){
+        return this;
+    }
+    var test = new Test3();
+    console.log(test);
+
+    /* 리터럴 객체: 변수와 함수를 저장 */
+    var obj = {
+        a: 10,
+        test: function(){
+            console.log(this);
+        }
+    }
+
+    var obj2 = obj;
+    obj2.a = 30;
+    console.log(obj2.a);
+    console.log(obj.a);
+    
+
+    //생성자 객체 활용
+    function Car(){
+        //var a;
+        // = this.a;
+        this.name="소나타";
+        return this;
+    }
+
+    Car.prototype.drive = function(){
+        console.log(this.name+"가 달립니다");
+    }
+    var myCar = new Car();
+    myCar.name="붕붕이";
+    myCar.drive();
+    console.log(myCar);
+
+    var yourCar = new Car();
+    yourCar.name="방방이";
+    yourCar.drive();
+    console.log(yourCar);
+
+
+    //primmitive type : a라는 방에 10이 들어 있다면 b라는 방에 10이라는 '값'을 줌(변수 느낌) '단둘'
+    var a = 10;
+    var b = a;
+    b = 30;
+    console.log(a,b);
+
+    //Reference type : 배열과 객체에서는 리퍼런스 타입 : 제3자를 arr과 arr2과 바라보기 때문에 값이 같이 바뀜
+    var arr = [1,2,3,4,5];
+    var arr2 = arr; //soft copy
+    var arr2 = arr.slice(); //deep copy를 하면 단둘이서만 바라보는 변수 느깜의 primmitive type처럼 만들 수 있음 
+    arr2[0] = 100;
+    console.log(arr,arr2);
+
+
+    //ES6 - 생성자 객체
+    class Car2 {
+        constructor(name){  //new를 선언하면 new에 선언한 값이 여기로 들어오면서 실행됨
+            this.name = name;
+        }
+        drive(){
+            console.log(this.name+"가 달립니다");
+        }
+    }
+    var car = new Car2('뿡뿡이');
+    car.drive();
+
+    //변수
+    //ES5 - var
+    //ES6 - var, let,const
+    var i = 0;
+    for(var i=0;i<5;i++){
+
+    }
+    console.log(i);
+    
+    var i =10;
+    for(let i=0;i<5;i++){
+        console.log(i);
+    }
+    console.log(i);
+  
+    /* 자바스크립트의 고질적 문제 */
+   /*  var list = document.querySelectorAll('ul>li');
+    for(var i=0; i<list.length;i++){
+        list[i].addEventListener("click",function(){
+            console.log(i);
+        })
+    } */
+    /* 해결 */
+
+    /* let은 for문을 선언할 때 사용하면 좋음 */
+    var list = document.querySelectorAll('ul>li');
+    for(let i=0; i<list.length;i++){
+        list[i].addEventListener("click",function(){
+            console.log(i);
+        })
+    }
+
+    console.clear();
+    
+    const a2 = 10; 
+    //a2 = 20;//const에서는 재선언 불가
+    console.log(a2);
+
+    var bb = 10;
+    var bb = 20; //var는 재선언 가능
+
+    /* const 활용법 :배열이나 객체를 바꿀때 사용 */
+    const arr5 = [];
+    arr5[0] = 'A';
+    console.log(arr5);
+
+
+
+    //ES6 Iteration
+
+
+
+
+    const arr6 = ['A','B','C'];
+    for(let i=0; i<arr6.length;i++){
+        console.log(arr6[i]);
+    }
+    /* 배열에 개수만큼 도는 것  */
+    for(let i in arr6) {
+        console.log(arr6[i]); //배열이기때문에 인덱스 번호의 값을 반환
+    }
+    /* 배열의 개수만큼 도는데 i값이 아닌 value값을 반환 */
+    for(let v of arr6) {
+        console.log(v);
+    }
+    arr6.forEach(function(v,i){
+        console.log(v,i);
+    });
+
+    /* for in문의 단점: 사용자가 만든 메서드를 전부 돌리기 때문에 개수가 맞지 않아짐 */
+    Array.prototype.test = function(){
+        console.log(this,"hi");
+    }
+    var arr7 = new Array();
+    arr7.test();
+
+    console.clear();
+    //filter,map
+    const users = [
+        {id: 1, name:"홍길동",age:25},
+        {id: 2, name:"홍길술",age:27},
+        {id: 3, name:"홍길란",age:32},
+        {id: 4, name:"홍길린",age:18},
+        {id: 5, name:"홍길리",age:31},
+        {id: 6, name:"홍길순",age:25},
+        {id: 7, name:"홍길영",age:23},
+    ];
+    const user30 = users.filter(function(v){ //(for문과 비슷)배열을 순회하면서 각각 함수가 v에 들어가면서 실행
+        return v.age >= 30;
+        //return true; (모두 나옴 = deap copy)
+    }); 
+    console.log(user30);
+
+    const user2021 = users.map(function(v){
+        var age = v.age + 1;
+        return age;
+    });
+    console.log(users,user2021);
+
+   /*  const user2021 = users.map(function(v){
+        var age2 = v.age + 1;
+        v.age2 = age2;
+        return v;
+    });
+    console.log(users,user2021); */
+
+    //ES6
+    //console.log(set);
+    //set.push()//맨 마지막에 데이터 인자를 집어넣음
+    let set = new Set();
+    set.add('A');
+    set.add('A');
+    set.add('B');
+    set.add('B');
+    set.add('C');
+    set.add('B');
+    set.add('A');
+    /* 데이터를 삭제하는 법 */
+    set.delete('B');
+    /* c가 있는 지 찾는 법 */
+    console.log(set.has('C'));
+    /* 데이터를 저장하는데 중복 데이터를 저장하지 않음 */
+    console.log(set);
+    console.log(set,set.size);//size=자바 스크립트 lengt와 같음
+    
+    
+    /* key value로 데이터를 저장 */
+    let map = new Map();
+    map.set('a','AAA');
+    map.set('b','BBB');
+    map.set('c','CCC');
+    map.set('d','DDD');
+    console.log(map);
+    console.log(map.size);
+    /* key, value를 반복문으로 돌릴 수 있다 */
+    for(let [k,v] of map){
+        console.log(k,v);
+    }
+    /* key값만 반환 */
+    console.log(map.keys());
+    /* value값만 반환 */
+    console.log(map.values());
+    
+    /* map의 value만 돌려서 나타내라 */
+    for(let v of map.values()){
+        console.log(v);
+    }
+    /* map의 key,value를 돌려라 */
+    for(let v of map.entries()){
+        console.log(v,i);
+    }
+
+    /* map에서 key값이 a이인 value만 가져와라 */
+    console.log(map.get('a'));
+    console.log(map.has('a'));
+
+    
+</script>
+</body>
+</html>
